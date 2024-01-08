@@ -11,43 +11,19 @@ Then we test that the result is a valid refactor for the context and this file.
 
 Must have GPT-4 Turbo to use right now.
 
-### Usage One File
-```ts
-
-aiRefactorOneFileOrCode({
-  code: {
-    beforeExample: {
-      codeFilePath: path.resolve(examplesPath, Examples.BEFORE_EXAMPLE)
-    },
-    afterExample: {
-      codeFilePath: path.resolve(examplesPath, Examples.AFTER_EXAMPLE)
-    },
-    refactorCode: {
-      codeFilePath: path.resolve(examplesPath, Examples.REFACTOR_CODE_EXAMPLE_2)
-    }
-  },
-  paths: {
-    examplePathRelativeToRoot: "pages/api/producer-firm/[producerFirmId]/production/[productionId]/reconciliation/credit-card-file-name.page.ts",
-    toRefactorPathRelativeToRoot: "pages/api/producer-firm/[producerFirmId]/production/[productionId]/reconciliation/credit-card-statement.page.ts",
-    outputFilePath: require("path").resolve(require("app-root-path").path, "src", "output.ts"),
-    repositoryRootAbsolutePath: "/Users/charles/Documents/rc-sep-13/packages/app"
-  }
-})
-  .then(result => {
-    console.log(result);
-  })
-  .catch((err) => {
-    console.error(err);
-    process.exit(1);
-  });
-```
 
 ### Usage Multiple Files
 ```ts
 
 aiRefactorDirectory({
   code: {
+    /*
+      Both beforeExample and afterExample can either be a string of code, or a path to a file. Before should be the code
+      before the model refactor you'd like to base later refactors on, and after should be the code after the changes
+      have been made.
+     */
     beforeExample: {
+      // code: "",
       codeFilePath: path.resolve(examplesPath, Examples.BEFORE_EXAMPLE)
     },
     afterExample: {
@@ -55,15 +31,24 @@ aiRefactorDirectory({
     }
   },
   paths: {
+    // The relative path of the file which was changed in the before and after
     examplePathRelativeToRoot: "pages/api/producer-firm/[producerFirmId]/production/[productionId]/reconciliation/credit-card-file-name.page.ts",
+    // The absolute path of the root of the repository
     repositoryRootAbsolutePath: "/Users/charles/Documents/rc-sep-13/packages/app",
+    // The relative path of the directory you want to apply the refactors over to the repository root
     refactorDirectoryPathRelativeToRoot: "/Users/charles/Documents/rc-sep-13/packages/app/pages"
   },
   fileToRefactorFilterFn: filePath => filePath.endsWith(".page.ts") && !filePath.endsWith(".test.ts"),
+  // If true, will overwrite the file being refactored with the result of the refactor.
   overwriteFilesWithResult: true,
   writeLogsEnabled: true,
-  pathsToIgnoreForRefactoring: toIgnore,
+  // A list of absolute paths of files to ignore
+  pathsToIgnoreForRefactoring: [],
   refactorDescription: [
+    /*
+      This only needs to be computed once for each before and after, so this property is here for if you want to hardcode this and
+      not have to compute it every time.
+     */
     {
       index: 1,
       "refactorTitle": "Type Alias Creation for Method Handlers",
@@ -78,6 +63,44 @@ aiRefactorDirectory({
     }
   ],
   maxConcurrency: 8
+})
+  .then(result => {
+    console.log(result);
+  })
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+```
+
+### Usage One File
+```ts
+
+aiRefactorOneFileOrCode({
+  code: {
+    /*
+      All of beforeExample, afterExample and refactorCode can be a string of code, or a path to a file. Before should
+      be the code before the model refactor you'd like to base later refactors on, and after should be the code after
+      the changes have been made, refactorCode should be the code over which you'd like to apply the refactor that produced
+      after from before. 
+     */
+    beforeExample: {
+      codeFilePath: path.resolve(examplesPath, Examples.BEFORE_EXAMPLE)
+    },
+    afterExample: {
+      codeFilePath: path.resolve(examplesPath, Examples.AFTER_EXAMPLE)
+    },
+    refactorCode: {
+      codeFilePath: path.resolve(examplesPath, Examples.REFACTOR_CODE_EXAMPLE_2)
+    }
+  },
+  paths: {
+    examplePathRelativeToRoot: "pages/api/producer-firm/[producerFirmId]/production/[productionId]/reconciliation/credit-card-file-name.page.ts",
+    toRefactorPathRelativeToRoot: "pages/api/producer-firm/[producerFirmId]/production/[productionId]/reconciliation/credit-card-statement.page.ts",
+    // Path to output the resulting refactored code
+    outputFilePath: require("path").resolve(require("app-root-path").path, "src", "output.ts"),
+    repositoryRootAbsolutePath: "/Users/charles/Documents/rc-sep-13/packages/app"
+  }
 })
   .then(result => {
     console.log(result);
