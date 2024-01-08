@@ -46,8 +46,9 @@ aiRefactorDirectory({
   pathsToIgnoreForRefactoring: [],
   refactorDescription: [
     /*
-      This only needs to be computed once for each before and after, so this property is here for if you want to hardcode this and
-      not have to compute it every time.
+      The delineated descriptions for the refactors involved only needs to be computed once for each before and after.
+      This this property is here for if you are using the same before and after many times and want to hardcode the result 
+      of this so you don't have to compute it every time.
      */
     {
       index: 1,
