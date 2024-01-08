@@ -40,10 +40,6 @@ export const doRefactorCode = async ({
   serializedFileStructure,
   logWriter
 }: DoRefactorCodeArgs): Promise<Result<string>> => {
-  console.log(`Performing refactor checks and a potential refactor for file ${paths.outputFilePath}`);
-  logWriter({
-    title: `Performing refactor checks and a potential refactor for file ${paths.outputFilePath}`
-  });
   let lastError: Error | null = null;
   try {
     return await retry(async (bail, attemptNumber): Promise<Result<string>> => {

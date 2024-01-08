@@ -67,10 +67,14 @@ export const aiRefactorOneFileOrCode = async ({
       paths: _paths
     });
   }
-
   logWriter({
     title: "Refactor description",
     body: refactorDescription
+  });
+
+  console.log(`Performing refactor checks and a potential refactor for file ${paths.outputFilePath}`);
+  logWriter({
+    title: `Performing refactor checks and a potential refactor for file ${paths.outputFilePath}`
   });
   const {
     data: refactoredResult, error

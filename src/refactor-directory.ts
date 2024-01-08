@@ -6,6 +6,7 @@ import { AiRefactorResult, RefactorExampleCode } from "./index";
 import { describeRefactor, RefactorDescribedItem } from "./prompts/describe-refactor";
 import { NoApplicableRefactors } from "./lib/errors";
 import { makeLogWriter } from "./lib/write-logs";
+import path from "path";
 
 export interface RefactorDirectoryArgs {
   code: {
@@ -78,18 +79,23 @@ export const aiRefactorDirectory = async ({
   });
 
   const limit = pLimit(maxConcurrency);
-  const refactorPromises = filesToRefactor.map(fileToRefactor => (
+  const refactorPromises = filesToRefactor.map((fileToRefactor, i) => (
     limit(async () => {
       const refactorCode = loadFile(fileToRefactor);
       const { refactorDirectoryPathRelativeToRoot, ...pathsWithoutRefactorDir } = paths;
       const _paths = {
         ...pathsWithoutRefactorDir,
-        toRefactorPathRelativeToRoot: fileToRefactor,
+        toRefactorPathRelativeToRoot: path.relative(paths.repositoryRootAbsolutePath, fileToRefactor),
         outputFilePath: overwriteFilesWithResult ? fileToRefactor : undefined,
         refactorDirectoryPathRelativeToRoot: ""
       };
       const logWriter = makeLogWriter(writeLogsEnabled, fileToRefactor);
       delete (_paths as any).refactorDirectoryPathRelativeToRoot;
+      const msg = `#${i + 1}/${fileToRefactor.length} :: Performing refactor checks and a potential refactor for file ${_paths.outputFilePath}`;
+      console.log(msg);
+      logWriter({
+        title: msg
+      });
       const {
         data: refactorResult, error
       } = await doRefactorCode({

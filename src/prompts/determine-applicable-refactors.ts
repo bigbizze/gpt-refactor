@@ -1,4 +1,4 @@
-import { cleanBodyForCreate, loadTsConfigJsonFileMappings, withRetry } from "../lib/utils";
+import { cleanBodyForCreate, withRetry } from "../lib/utils";
 import { openai } from "../index";
 import { RefactorPromptArgs } from "../lib/do-refactor-code";
 import { RefactorDescribedItem } from "./describe-refactor";
@@ -56,7 +56,6 @@ export const determineApplicableRefactors = withRetry("determineApplicableRefact
   beforeExampleCode,
   afterExampleCode,
   paths: {
-    repositoryRootAbsolutePath,
     toRefactorPathRelativeToRoot,
     examplePathRelativeToRoot
   },
@@ -64,9 +63,6 @@ export const determineApplicableRefactors = withRetry("determineApplicableRefact
   refactorDescription,
   language = "typescript"
 }: RefactorPromptArgs & { gitDiff: string }): Promise<ApplyRefactorItem[]> => {
-
-
-  const tsconfigFileMappings = loadTsConfigJsonFileMappings(repositoryRootAbsolutePath);
   const results = await openai.chat.completions.create(cleanBodyForCreate({
     model: "gpt-4-1106-preview",
     tools: [
@@ -87,7 +83,7 @@ You are an expert consultant in the ${language} language tasked with determining
 to the code in the SHOULD WE APPLY THE REFACTOR TO THIS CODE section, as is represented by the refactor performed to produce
 the AFTER EXAMPLE code from the BEFORE EXAMPLE code, as described in the GIT DIFF section. You will receive:
 
-- (REFACTOR DESCRIPTION) A JSON list of objects with three properties: "refactorTitle", "refactorDescription", and "gitDiffSection" which
+- (REFACTOR ITEMS) A JSON list of objects with three properties: "refactorTitle", "refactorDescription", and "gitDiffSection" which
   describe refactors that were performed to produce the AFTER EXAMPLE code from the BEFORE EXAMPLE code.
 - (BEFORE EXAMPLE) The code before the example refactor.
 - (AFTER EXAMPLE) The code after the example refactor.
@@ -103,7 +99,7 @@ headers.
 
 ##############
 
-REFACTOR DESCRIPTION
+REFACTOR ITEMS
 <list of objects where each describes a different identified refactor found>
 
 BEFORE EXAMPLE <file path relative-to-repository-root for example file>

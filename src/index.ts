@@ -12,7 +12,7 @@ require("dotenv").config({
   path: path.resolve(appRootPath, ".env")
 });
 
-
+export const examplesPath = path.resolve(appRootPath, "examples");
 export enum Examples {
   AFTER_EXAMPLE = "after-example.txt",
   BEFORE_EXAMPLE = "before-example.txt",
