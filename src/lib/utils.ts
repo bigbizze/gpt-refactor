@@ -1,13 +1,12 @@
 import * as fs from "fs";
 import path from "path";
 import gitDiff from "git-diff";
-import { openai, RefactorExampleCode } from "../index";
+import { RefactorExampleCode } from "../index";
 import { RefactorDescribedItem } from "../prompts/describe-refactor";
 import { ApplyRefactorItem } from "../prompts/determine-applicable-refactors";
 import { keyBy } from "lodash";
-import { ChatCompletion, ChatCompletionCreateParamsNonStreaming } from "openai/src/resources/chat/completions";
+import { ChatCompletionCreateParamsNonStreaming } from "openai/src/resources/chat/completions";
 import retry from "async-retry";
-import { APIPromise } from "openai/src/core";
 
 export const getCodeText = ({
   code,

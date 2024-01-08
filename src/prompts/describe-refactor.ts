@@ -1,5 +1,4 @@
-import { RefactorPromptArgs } from "../lib/do-refactor-code";
-import { cleanBodyForCreate, findGitDiff, loadTsConfigJsonFileMappings, withRetry } from "../lib/utils";
+import { cleanBodyForCreate, loadTsConfigJsonFileMappings, withRetry } from "../lib/utils";
 import { openai } from "../index";
 import * as Yup from "yup";
 

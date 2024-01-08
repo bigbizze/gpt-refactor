@@ -1,7 +1,6 @@
 import { findGitDiff, getCodeText } from "./lib/utils";
 import { doRefactorCode } from "./lib/do-refactor-code";
-import { AiRefactorResult, Examples, examplesPath, RefactorExampleCode } from "./index";
-import path from "path";
+import { AiRefactorResult, RefactorExampleCode } from "./index";
 import { describeRefactor, RefactorDescribedItem } from "./prompts/describe-refactor";
 import { NoApplicableRefactors } from "./lib/errors";
 import { getSerializedFileStructure } from "./lib/file-structure";

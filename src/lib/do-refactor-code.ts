@@ -1,14 +1,15 @@
-import { ApplyRefactorItem, determineApplicableRefactors } from "../prompts/determine-applicable-refactors";
+import { determineApplicableRefactors } from "../prompts/determine-applicable-refactors";
 import { performCodeRefactor } from "../prompts/perform-code-refactor";
-import { filterRefactorsToThoseApplicable, removeCodeBlock } from "./utils";
+import { filterRefactorsToThoseApplicable } from "./utils";
 import fs from "fs";
 import { AllRefactorArgs } from "../index";
-import { describeRefactor, RefactorDescribedItem } from "../prompts/describe-refactor";
+import { RefactorDescribedItem } from "../prompts/describe-refactor";
 import { isSensibleRefactor } from "../prompts/is-sensible-refactor";
 import retry from "async-retry";
 import { NoApplicableRefactors, NonsensicalRefactorError } from "./errors";
 import { err, ok, Result } from "ts-error-as-value";
-import { LogWriter, makeLogWriter } from "./write-logs";
+import { LogWriter } from "./write-logs";
+
 export interface RefactorPromptArgs extends Omit<AllRefactorArgs, "refactor" | "code" | "language" | "logResultOutput" | "shouldTestIfShouldRefactor"> {
   refactorCode: string,
   beforeExampleCode: string,

@@ -1,10 +1,4 @@
-import {
-  cleanBodyForCreate,
-  findGitDiff,
-  loadTsConfigJsonFileMappings,
-  withRetry
-} from "../lib/utils";
-import { getFileStructure, getSerializedFileStructure } from "../lib/file-structure";
+import { cleanBodyForCreate, loadTsConfigJsonFileMappings, withRetry } from "../lib/utils";
 import { openai } from "../index";
 import { RefactorPromptArgs } from "../lib/do-refactor-code";
 import { RefactorDescribedItem } from "./describe-refactor";

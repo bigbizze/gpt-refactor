@@ -3,18 +3,15 @@ import { path as appRootPath } from "app-root-path";
 import path from "path";
 import { RefactorOneFileArgs } from "./refactor-one-file";
 import { RefactorDirectoryArgs } from "./refactor-directory";
-import * as Core from "openai/src/core";
-import { ChatCompletion, ChatCompletionCreateParamsNonStreaming } from "openai/src/resources/chat/completions";
-import { applyFnToAllStringProperties, replaceWhitespaceWithSingleSpace } from "./lib/utils";
-import { APIPromise } from "openai/src/core";
+
 export { aiRefactorDirectory } from "./refactor-directory";
 export { aiRefactorOneFileOrCode } from "./refactor-one-file";
+export { appRootPath };
 
 require("dotenv").config({
   path: path.resolve(appRootPath, ".env")
 });
 
-export const examplesPath = path.resolve(appRootPath, "src", "examples");
 
 export enum Examples {
   AFTER_EXAMPLE = "after-example.txt",

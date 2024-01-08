@@ -1,13 +1,6 @@
-import { getFileStructure, getSerializedFileStructure } from "../lib/file-structure";
 import { openai } from "../index";
 import { RefactorPromptArgs } from "../lib/do-refactor-code";
-import {
-  cleanBodyForCreate,
-  findGitDiff,
-  loadTsConfigJsonFileMappings,
-  removeCodeBlock,
-  withRetry
-} from "../lib/utils";
+import { cleanBodyForCreate, loadTsConfigJsonFileMappings, removeCodeBlock, withRetry } from "../lib/utils";
 
 export const performCodeRefactor = withRetry("performCodeRefactor", async ({
   refactorCode,
